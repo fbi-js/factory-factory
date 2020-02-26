@@ -1,0 +1,9 @@
+.DS_Store
+*-debug.log
+*-error.log
+/node_modules
+/tmp
+/.nyc_output
+/package-lock.json
+/pnpm-lock.yaml
+yarn.lock

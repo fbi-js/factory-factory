@@ -1,0 +1,24 @@
+{
+  "name": "factory-factory",
+  "version": "0.0.0",
+  "description": "factorty for fbi factory development",
+  "private": true,
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rm -rf lib && tsc -p .",
+    "watch": "npm run build && tsc --watch"
+  },
+  "keywords": [],
+  "author": "shaw @neikvon",
+  "license": "MIT",
+  "dependencies": {
+    "fbi": "workspace:*",
+    "ejs": "^3.0.1",
+    "tslib": "^1.11.0",
+    "typescript": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.0.1",
+    "@types/node": "^13.7.4"
+  }
+}

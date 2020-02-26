@@ -1,0 +1,25 @@
+{
+  "name": "<%= project.name %>",
+  "version": "0.0.0",
+  "description": "<%= project.description %>",
+  "private": true,
+  "main": "lib/index.js",
+  "scripts": {
+  <%_ if (project.features.typescript) { _%>
+    "build": "fbi b",
+    "watch": "fbi w"
+  <%_ } _%>
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "fbi": "workspace:*"
+  }<%_ if (project.features.typescript) { _%>,
+  "devDependencies": {
+    "tslib": "^1.11.0",
+    "@types/node": "^13.7.4",
+    "@types/ejs": "^3.0.1"
+  }<%_ } _%>
+}
