@@ -79,6 +79,7 @@ export default class CommandWatch extends Command {
           const msg = ts.formatDiagnostic(diagnostic, this.formatHost)
           if (/Found 0 errors/.test(msg)) {
             // this.clearConsole()
+            this.clear()
             spinner.succeed(msg)
           } else if (/Starting compilation in watch mode/.test(msg)) {
           } else {
