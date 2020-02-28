@@ -14,31 +14,26 @@ export default class TemplateCommand extends Template {
     super()
   }
 
-  protected async prompting() {
-    const { command } = await this.prompt([
-      {
-        type: 'Form',
-        name: 'command',
-        message: 'Please provide the following information:',
-        choices: [
-          { name: 'id', message: 'ID', initial: 'my-command' },
-          { name: 'alias', message: 'Alias', initial: '' },
-          { name: 'description', message: 'Description', initial: '' },
-          { name: 'args', message: 'Arguments', initial: '' },
-          // TODO:
-          { name: 'flags', message: 'Flags', initial: '' }
-        ]
-      }
-    ])
+  protected async gathering() {
+    const { command } = await this.prompt({
+      type: 'Form',
+      name: 'command',
+      message: 'Please provide the following information:',
+      choices: [
+        { name: 'id', message: 'ID', initial: 'my-command' },
+        { name: 'alias', message: 'Alias', initial: '' },
+        { name: 'description', message: 'Description', initial: '' },
+        { name: 'args', message: 'Arguments', initial: '' },
+        // TODO:
+        { name: 'flags', message: 'Flags', initial: '' }
+      ]
+    } as any)
     this.data.command = command || {}
     this.data.command.capitalizedId = capitalizeEveryWord(command.id)
 
     const factory = this.context.get('config.factory')
     this.features = factory?.features || {}
-  }
 
-  protected async start() {
-    const { factory, command } = this.data
     this.spinner = this.createSpinner(`Creating command...`).start(
       `Creating command ${this.style.bold.green(command.id)} via ${this.id} from ${
         factory.template
@@ -78,13 +73,10 @@ export default class TemplateCommand extends Template {
         }
       ]
     }
-  }
-
-  protected async install() {
     this.spinner.succeed(`Created command ${this.style.cyan.bold(this.data.command.id)}`)
   }
 
-  protected async end() {
+  protected async ending() {
     const { command } = this.data
     const commandFullId = `Command${command.capitalizedId}`
     if (this.errors) {

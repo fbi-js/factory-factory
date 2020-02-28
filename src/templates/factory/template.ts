@@ -14,18 +14,16 @@ export default class TemplateTemplate extends Template {
     super()
   }
 
-  protected async prompting() {
-    const { template } = await this.prompt([
-      {
-        type: 'Form',
-        name: 'template',
-        message: 'Please provide the following information:',
-        choices: [
-          { name: 'id', message: 'ID', initial: 'my-template' },
-          { name: 'description', message: 'Description', initial: '' }
-        ]
-      }
-    ])
+  protected async gathering() {
+    const { template } = await this.prompt({
+      type: 'Form',
+      name: 'template',
+      message: 'Please provide the following information:',
+      choices: [
+        { name: 'id', message: 'ID', initial: 'my-template' },
+        { name: 'description', message: 'Description', initial: '' }
+      ]
+    } as any)
     this.data.template = template || {}
     this.data.template.capitalizedId = capitalizeEveryWord(template.id)
 
@@ -33,7 +31,7 @@ export default class TemplateTemplate extends Template {
     this.features = factory?.features || {}
   }
 
-  protected async start() {
+  protected async checking() {
     const { factory, template } = this.data
     this.targetDir = process.cwd()
     const dirExist = await this.fs.pathExists(join(this.targetDir, 'templates', template.id))
@@ -80,13 +78,10 @@ export default class TemplateTemplate extends Template {
         }
       ]
     }
-  }
-
-  protected async install() {
     this.spinner.succeed(`Created template ${this.style.cyan.bold(this.data.template.id)}`)
   }
 
-  protected async end() {
+  protected async ending() {
     const { template } = this.data
     const templateFullId = `Template${template.capitalizedId}`
     if (this.errors) {

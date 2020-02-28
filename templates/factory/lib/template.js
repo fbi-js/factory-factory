@@ -14,7 +14,7 @@ module.exports = class Template<%= capitalizedId %> extends Template {
     this.factory = factory
   }
 
-  async prompting() {
+  async gathering() {
     this.data.project = await this.prompt([
       {
         type: 'input',
@@ -49,9 +49,7 @@ module.exports = class Template<%= capitalizedId %> extends Template {
         }
       }
     ])
-  }
 
-  async start() {
     const { factory, project } = this.data
     this.spinner = this.createSpinner(`Creating project...`).start(
       `Creating ${this.style.bold.green(project.name)} via ${factory.id} from ${
@@ -81,7 +79,7 @@ module.exports = class Template<%= capitalizedId %> extends Template {
     }
   }
 
-  async install() {
+  async installing(flags) {
     const { project } = this.data
     this.spinner.succeed(`Created project ${this.style.cyan.bold(project.name)}`)
 
@@ -89,7 +87,7 @@ module.exports = class Template<%= capitalizedId %> extends Template {
     if (isValidObject(dependencies) || isValidObject(devDependencies)) {
       const installSpinner = this.createSpinner(`Installing dependencies...`).start()
       try {
-        const { packageManager } = this.context.get('config')
+        const packageManager = flags.packageManager || this.context.get('config').packageManager
         const cmds = packageManager === 'yarn' ? [packageManager] : [packageManager, 'install']
         this.debug(`\nrunning \`${cmds.join(' ')}\` in ${this.targetDir}`)
         await this.exec(cmds[0], cmds.slice(1), {
@@ -103,7 +101,7 @@ module.exports = class Template<%= capitalizedId %> extends Template {
     }
   }
 
-  async end() {
+  async ending() {
     const { project } = this.data
     const projectName = this.style.cyan.bold(project.name)
     if (this.errors) {

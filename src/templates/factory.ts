@@ -17,7 +17,7 @@ export default class TemplateFactory extends Template {
     super()
   }
 
-  protected async prompting() {
+  protected async gathering() {
     this.data.project = await this.prompt([
       {
         type: 'input',
@@ -78,12 +78,10 @@ export default class TemplateFactory extends Template {
           }))
         }
       }
-    ])
+    ] as any)
 
     this.data.project.nameCapitalized = capitalizeEveryWord(this.data.project.name)
-  }
 
-  protected async start() {
     const { factory, project } = this.data
     this.spinner = this.createSpinner(`Creating project...`).start(
       `Creating ${this.style.bold.green(project.name)} via ${factory.id} from ${
@@ -143,7 +141,7 @@ export default class TemplateFactory extends Template {
     }
   }
 
-  protected async install() {
+  protected async installing(flags: Record<string, any>) {
     const { project } = this.data
     this.spinner.succeed(`Created project ${this.style.cyan.bold(project.name)}`)
 
@@ -151,7 +149,7 @@ export default class TemplateFactory extends Template {
     if (isValidObject(dependencies) || isValidObject(devDependencies)) {
       const installSpinner = this.createSpinner(`Installing dependencies...`).start()
       try {
-        const { packageManager } = this.context.get('config')
+        const packageManager = flags.packageManager || this.context.get('config').packageManager
         const cmds = packageManager === 'yarn' ? [packageManager] : [packageManager, 'install']
         this.debug(`\nrunning \`${cmds.join(' ')}\` in ${this.targetDir}`)
         await this.exec(cmds[0], cmds.slice(1), {
@@ -165,7 +163,7 @@ export default class TemplateFactory extends Template {
     }
   }
 
-  protected async end() {
+  protected async ending() {
     const { project } = this.data
     const projectName = this.style.cyan.bold(project.name)
     if (this.errors) {

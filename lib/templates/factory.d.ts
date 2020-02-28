@@ -11,9 +11,8 @@ export default class TemplateFactory extends Template {
     renderer: typeof ejs.render;
     templates: (SubTemplateCommand | SubTemplateTemplate)[];
     constructor(factory: Factory);
-    protected prompting(): Promise<void>;
-    protected start(): Promise<void>;
+    protected gathering(): Promise<void>;
     protected writing(): Promise<void>;
-    protected install(): Promise<void>;
-    protected end(): Promise<void>;
+    protected installing(flags: Record<string, any>): Promise<void>;
+    protected ending(): Promise<void>;
 }

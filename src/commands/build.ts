@@ -29,8 +29,7 @@ export default class CommandBuild extends Command {
       const files = await this.glob('**/*.ts', {
         cwd: config.compilerOptions.rootDir,
         dot: true,
-        nodir: true,
-        ignore: []
+        filesOnly: true
       })
 
       const { options: tsOptions, errors } = ts.convertCompilerOptionsFromJson(

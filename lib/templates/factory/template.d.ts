@@ -8,9 +8,8 @@ export default class TemplateTemplate extends Template {
     path: string;
     renderer: typeof ejs.render;
     constructor(factory: Factory);
-    protected prompting(): Promise<void>;
-    protected start(): Promise<void>;
+    protected gathering(): Promise<void>;
+    protected checking(): Promise<void>;
     protected writing(): Promise<void>;
-    protected install(): Promise<void>;
-    protected end(): Promise<void>;
+    protected ending(): Promise<void>;
 }
