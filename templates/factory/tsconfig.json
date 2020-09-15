@@ -8,7 +8,9 @@
     "strict": true,
     "pretty": true,
     "target": "es2019",
-    "noImplicitThis": false
+    "noImplicitThis": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
   "exclude": ["templates/**/*"]

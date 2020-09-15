@@ -15,7 +15,7 @@ export default class TemplateTemplate extends Template {
   }
 
   protected async gathering() {
-    const { template } = await this.prompt({
+    const { template } = (await this.prompt({
       type: 'Form',
       name: 'template',
       message: 'Please provide the following information:',
@@ -23,7 +23,7 @@ export default class TemplateTemplate extends Template {
         { name: 'id', message: 'ID', initial: 'my-template' },
         { name: 'description', message: 'Description', initial: '' }
       ]
-    } as any)
+    } as any)) as any
     this.data.template = template || {}
     this.data.template.capitalizedId = capitalizeEveryWord(template.id)
 

@@ -15,7 +15,7 @@ export default class TemplateCommand extends Template {
   }
 
   protected async gathering() {
-    const { command } = await this.prompt({
+    const { command } = (await this.prompt({
       type: 'Form',
       name: 'command',
       message: 'Please provide the following information:',
@@ -27,7 +27,7 @@ export default class TemplateCommand extends Template {
         // TODO:
         { name: 'flags', message: 'Flags', initial: '' }
       ]
-    } as any)
+    } as any)) as any
     this.data.command = command || {}
     this.data.command.capitalizedId = capitalizeEveryWord(command.id)
 
@@ -52,12 +52,12 @@ export default class TemplateCommand extends Template {
     // check file exist
     if (await this.fs.pathExists(join(this.targetDir, to))) {
       this.spinner.stop()
-      const { action } = await this.prompt({
+      const { action } = (await this.prompt({
         type: 'select',
         name: 'action',
         message: `Command "${command.id}" already exist, please choose an action:`,
         choices: ['Cancel', 'Override']
-      })
+      })) as any
 
       if (action === 'Cancel') {
         this.exit()

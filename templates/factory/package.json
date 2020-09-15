@@ -14,12 +14,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ejs": "^3.0.1",
-    "fbi": "workspace:*"
+    "ejs": "^3.1.5",
+    "fbi": "next"
   }<%_ if (project.features.typescript) { _%>,
   "devDependencies": {
-    "tslib": "^1.11.0",
-    "@types/node": "^13.7.4",
-    "@types/ejs": "^3.0.1"
+    "tslib": "^2.0.1",
+    "@types/node": "^14.10.0",
+    "@types/ejs": "^3.0.4"
   }<%_ } _%>
 }
