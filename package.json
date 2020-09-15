@@ -12,7 +12,7 @@
   "author": "shaw @neikvon",
   "license": "MIT",
   "dependencies": {
-    "fbi": "workspace:*",
+    "fbi": "next",
     "ejs": "^3.1.5",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
