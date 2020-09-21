@@ -9,7 +9,7 @@ export default class CommandWatch extends Command {
   alias = 'w'
   description = 'watching for file changes (typescript only)'
   formatHost: ts.FormatDiagnosticsHost = {
-    getCanonicalFileName: path => path,
+    getCanonicalFileName: (path) => path,
     getCurrentDirectory: ts.sys.getCurrentDirectory,
     getNewLine: () => ts.sys.newLine
   }
@@ -24,9 +24,11 @@ export default class CommandWatch extends Command {
       : 'Because there is no need to compile.'
   }
 
-  public async run() {
-    this.factory.factoryMethod1()
-    this.log(`Factory: (${this.factory.id})`, 'from command', this.id)
+  public async run(flags: any, unknow: any) {
+    this.debug(`Running command "${this.id}" from factory "${this.factory.id}" with options:`, {
+      flags,
+      unknow
+    })
 
     const spinner = this.createSpinner(`Start watching...`).start()
     try {
@@ -101,7 +103,7 @@ export default class CommandWatch extends Command {
         return origCreateProgram(rootNames, options, host, oldProgram)
       }
       const origPostProgramCreate = host.afterProgramCreate
-      host.afterProgramCreate = program => {
+      host.afterProgramCreate = (program) => {
         origPostProgramCreate!(program)
       }
 

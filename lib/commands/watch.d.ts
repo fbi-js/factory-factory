@@ -9,5 +9,5 @@ export default class CommandWatch extends Command {
     formatHost: ts.FormatDiagnosticsHost;
     constructor(factory: Factory);
     disable(): false | "Because there is no need to compile.";
-    run(): Promise<void>;
+    run(flags: any, unknow: any): Promise<void>;
 }

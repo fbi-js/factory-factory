@@ -7,5 +7,4 @@ export default class FactoryFactory extends Factory {
     description: string;
     commands: (CommandBuild | CommandWatch)[];
     templates: TemplateFactory[];
-    factoryMethod1(): void;
 }

@@ -1,14 +1,13 @@
 import { Command } from 'fbi'
 import * as ts from 'typescript'
 import { join, relative } from 'path'
+
 import Factory from '..'
 import { getTsConfig } from '../tsconfig'
 
 export default class CommandBuild extends Command {
   id = 'build'
   alias = 'b'
-  args = ''
-  flags = [['-e, --env', 'building for the environment', 'prod']]
   description = 'build for production (typescript only)'
 
   constructor(public factory: Factory) {
@@ -21,8 +20,11 @@ export default class CommandBuild extends Command {
       : 'Because there is no need to compile.'
   }
 
-  public async run(flags: any) {
-    this.debug(`Factory: (${this.factory.id})`, 'from command', this.id, flags)
+  public async run(flags: any, unknow: any) {
+    this.debug(`Running command "${this.id}" from factory "${this.factory.id}" with options:`, {
+      flags,
+      unknow
+    })
     const spinner = this.createSpinner(`Start compiling...`).start()
     try {
       const config = getTsConfig()
@@ -41,10 +43,11 @@ export default class CommandBuild extends Command {
         this.error(errors.join('\n'))
       }
 
-      const { code } = this.compile(
+      this.compile(
         files.map((f: string) => join(config.compilerOptions.rootDir, f)),
         tsOptions
       )
+      files.map((f) => this.debug(f))
       spinner.succeed('Compiled successfully')
     } catch (err) {
       spinner.fail(this.style.red(err.message))
@@ -57,7 +60,7 @@ export default class CommandBuild extends Command {
     const emitResult = program.emit()
     const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics)
 
-    allDiagnostics.forEach(diagnostic => {
+    allDiagnostics.forEach((diagnostic) => {
       if (diagnostic.file) {
         const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(
           diagnostic.start || 0
