@@ -1,10 +1,12 @@
-import { join } from 'path'
-import { Template } from 'fbi'
 import * as ejs from 'ejs'
+import { join } from 'path'
+import { Template, utils } from 'fbi'
+
 import Factory from '..'
-import { formatName, capitalizeEveryWord, isValidObject } from 'fbi/lib/utils'
 import SubTemplateCommand from './factory/command'
 import SubTemplateTemplate from './factory/template'
+
+const { formatName, capitalizeEveryWord, isValidObject } = utils
 
 export default class TemplateFactory extends Template {
   id = 'factory'
@@ -153,12 +155,7 @@ export default class TemplateFactory extends Template {
     if (isValidObject(dependencies) || isValidObject(devDependencies)) {
       const installSpinner = this.createSpinner(`Installing dependencies...`).start()
       try {
-        const packageManager = flags.packageManager || this.context.get('config').packageManager
-        const cmds = packageManager === 'yarn' ? [packageManager] : [packageManager, 'install']
-        this.debug(`\nrunning \`${cmds.join(' ')}\` in ${this.targetDir}`)
-        await this.exec(cmds[0], cmds.slice(1), {
-          cwd: this.targetDir
-        })
+        await this.installDeps(this.targetDir, flags.packageManager, false)
         installSpinner.succeed(`Installed dependencies`)
       } catch (err) {
         installSpinner.fail('Failed to install dependencies. You can install them manually.')
