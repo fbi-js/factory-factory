@@ -18,13 +18,14 @@ export default class TemplateFactory extends Template {
   }
 
   protected async gathering() {
+    const defaultName = (this.data.project && this.data.project.name) || 'factory-demo'
     this.data.project = await this.prompt([
       {
         type: 'input',
         name: 'name',
         message: 'Input the factory name',
         initial({ enquirer }: any) {
-          return 'factory-demo'
+          return defaultName
         },
         validate(value: any) {
           const name = formatName(value)
@@ -91,6 +92,7 @@ export default class TemplateFactory extends Template {
   }
 
   protected async writing() {
+    const debug = !!this.context.get('debug')
     const { project } = this.data
     this.files = {
       copy: [
@@ -136,7 +138,9 @@ export default class TemplateFactory extends Template {
         }))
       ],
       renderOptions: {
-        async: true
+        async: true,
+        debug,
+        compileDebug: debug
       }
     }
   }
@@ -171,9 +175,7 @@ export default class TemplateFactory extends Template {
       this.error(this.errors)
     }
 
-    console.log(`
-Next steps:
-  $ ${this.style.cyan('cd ' + project.name)}`)
+    console.log(`\nNext steps:\n`)
 
     if (project.features.typescript) {
       console.log(`
@@ -187,30 +189,28 @@ Next steps:
   $ ${this.style.cyan('fbi watch')}
 
   ${this.style.dim('4. change some code and start testing')}
-  ${this.style.dim('how to test?')}
   $ ${this.style.cyan('cd another/directory')}
   $ ${this.style.cyan('fbi list')} ${this.style.dim(
-        `the factory "${project.name}" should be listed in the "available factories"`
+        `the factory "${project.name}" should be listed"`
       )}
   $ ${this.style.cyan(`fbi create`)} ${this.style.dim('select a template you just created')}
 
-  ${this.style.dim('5. unlink the factory from the store after tested')}
-  $ ${this.style.cyan('fbi unlink')}`)
+  ${this.style.dim('5. remove the factory from the store after tested')}
+  $ ${this.style.cyan(`fbi remove ${project.name}`)}`)
     } else {
       console.log(`
   ${this.style.dim('1. link the factory to the store for testing')}
   $ ${this.style.cyan('fbi link')}
 
   ${this.style.dim('2. change some code and start testing')}
-  ${this.style.dim('how to test?')}
   $ ${this.style.cyan('cd another/directory')}
   $ ${this.style.cyan('fbi list')} ${this.style.dim(
-        `the factory "${project.name}" should be listed in the "available factories"`
+        `the factory "${project.name}" should be listed"`
       )}
   $ ${this.style.cyan(`fbi create`)} ${this.style.dim('select a template you just created')}
 
-  ${this.style.dim('3. unlink the factory from the store after tested')}
-  $ ${this.style.cyan('fbi unlink')}`)
+  ${this.style.dim('3. remove the factory from the store after tested')}
+  $ ${this.style.cyan(`fbi remove ${project.name}`)}`)
     }
   }
 }

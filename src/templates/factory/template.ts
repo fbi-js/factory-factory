@@ -1,8 +1,10 @@
-import { join } from 'path'
-import { Template } from 'fbi'
 import * as ejs from 'ejs'
+import { join } from 'path'
+import { Template, utils } from 'fbi'
+
 import Factory from '../..'
-import { capitalizeEveryWord } from 'fbi/lib/utils'
+
+const { capitalizeEveryWord } = utils
 
 export default class TemplateTemplate extends Template {
   id = 'template'
@@ -20,9 +22,12 @@ export default class TemplateTemplate extends Template {
       name: 'template',
       message: 'Please provide the following information:',
       choices: [
-        { name: 'id', message: 'ID', initial: 'my-template' },
-        { name: 'description', message: 'Description', initial: '' }
-      ]
+        { name: 'id', message: 'ID' },
+        { name: 'description', message: 'Description' }
+      ],
+      validate({ id }: any) {
+        return !!id.trim() || 'ID is required. e.g.: vue, react'
+      }
     } as any)) as any
     this.data.template = template || {}
     this.data.template.capitalizedId = capitalizeEveryWord(template.id)
@@ -57,6 +62,7 @@ export default class TemplateTemplate extends Template {
   }
 
   protected async writing() {
+    const debug = !!this.context.get('debug')
     const { template } = this.data
     const from = this.features.typescript ? 'src/template.ts' : 'lib/template.js'
     const to = this.features.typescript
@@ -76,7 +82,12 @@ export default class TemplateTemplate extends Template {
           from: 'templates/default',
           to: `templates/${template.id}`
         }
-      ]
+      ],
+      renderOptions: {
+        async: true,
+        debug,
+        compileDebug: debug
+      }
     }
     this.spinner.succeed(`Created template ${this.style.cyan.bold(this.data.template.id)}`)
   }

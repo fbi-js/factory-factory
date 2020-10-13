@@ -1,8 +1,10 @@
-import { join } from 'path'
-import { Template } from 'fbi'
 import * as ejs from 'ejs'
+import { join } from 'path'
+import { Template, utils } from 'fbi'
+
 import Factory from '..'
-import { formatName, isValidObject } from 'fbi/lib/utils'
+
+const { formatName, isValidObject } = utils
 
 export default class Template<%= capitalizedId %> extends Template {
   id = '<%= id %>'
@@ -59,6 +61,7 @@ export default class Template<%= capitalizedId %> extends Template {
   }
 
   protected async writing() {
+    const debug = !!this.context.get('debug')
     const { project } = this.data
     this.files = {
       copy: [
@@ -74,7 +77,9 @@ export default class Template<%= capitalizedId %> extends Template {
         project.features.typescript ? 'src/index.ts' : 'src/index.js'
       ],
       renderOptions: {
-        async: true
+        async: true,
+        debug,
+        compileDebug: debug
       }
     }
   }

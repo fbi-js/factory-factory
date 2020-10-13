@@ -1,5 +1,5 @@
-import { Template } from 'fbi';
 import * as ejs from 'ejs';
+import { Template } from 'fbi';
 import Factory from '../..';
 export default class TemplateCommand extends Template {
     factory: Factory;

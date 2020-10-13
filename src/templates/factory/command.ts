@@ -1,8 +1,10 @@
-import { join } from 'path'
-import { Template } from 'fbi'
 import * as ejs from 'ejs'
+import { join } from 'path'
+import { Template, utils } from 'fbi'
+
 import Factory from '../..'
-import { capitalizeEveryWord } from 'fbi/lib/utils'
+
+const { capitalizeEveryWord } = utils
 
 export default class TemplateCommand extends Template {
   id = 'command'
@@ -20,13 +22,13 @@ export default class TemplateCommand extends Template {
       name: 'command',
       message: 'Please provide the following information:',
       choices: [
-        { name: 'id', message: 'ID', initial: 'my-command' },
-        { name: 'alias', message: 'Alias', initial: '' },
-        { name: 'description', message: 'Description', initial: '' },
-        { name: 'args', message: 'Arguments', initial: '' },
-        // TODO:
-        { name: 'flags', message: 'Flags', initial: '' }
-      ]
+        { name: 'id', message: 'ID' },
+        { name: 'alias', message: 'Alias' },
+        { name: 'description', message: 'Description' }
+      ],
+      validate({ id }: any) {
+        return !!id.trim() || 'ID is required. e.g.: serve, build'
+      }
     } as any)) as any
     this.data.command = command || {}
     this.data.command.capitalizedId = capitalizeEveryWord(command.id)
@@ -42,6 +44,7 @@ export default class TemplateCommand extends Template {
   }
 
   protected async writing() {
+    const debug = !!this.context.get('debug')
     this.targetDir = process.cwd()
     const { command } = this.data
     const from = this.features.typescript ? 'src/command.ts' : 'lib/command.js'
@@ -71,7 +74,12 @@ export default class TemplateCommand extends Template {
           to,
           data: command
         }
-      ]
+      ],
+      renderOptions: {
+        async: true,
+        debug,
+        compileDebug: debug
+      }
     }
     this.spinner.succeed(`Created command ${this.style.cyan.bold(this.data.command.id)}`)
   }

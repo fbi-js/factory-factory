@@ -1,17 +1,17 @@
 const ejs = require('ejs')
 const { join } = require('path')
-const { Template } = require('fbi')
-const { formatName, isValidObject } = require('fbi/lib/utils')
+const { Template, utils } = require('fbi')
+const { formatName, isValidObject } = utils
 
 module.exports = class Template<%= capitalizedId %> extends Template {
-  id = '<%= id %>'
-  description = '<%_ if(description) {_ %> <%= description %> <%_ } else { _%> template <%= id %> description <%_ } _%>'
-  path = 'templates/<%= id %>'
-  renderer = ejs.render
-
   constructor(factory) {
     super()
     this.factory = factory
+    this.id = '<%= id %>'
+    this.description = '<%_ if(description) { _%> <%= description %> <%_ } else { _%> template <%= id %> description <%_ } _%>'
+    this.path = 'templates/<%= id %>'
+    this.renderer = ejs.render
+    this.templates = []
   }
 
   async gathering() {
@@ -58,7 +58,10 @@ module.exports = class Template<%= capitalizedId %> extends Template {
     )
   }
 
+  async checking() {}
+
   async writing() {
+    const debug = !!this.context.get('debug')
     const { project } = this.data
     this.files = {
       copy: [
@@ -74,7 +77,9 @@ module.exports = class Template<%= capitalizedId %> extends Template {
         project.features.typescript ? 'src/index.ts' : 'lib/index.js'
       ],
       renderOptions: {
-        async: true
+        async: true,
+        debug,
+        compileDebug: debug
       }
     }
   }

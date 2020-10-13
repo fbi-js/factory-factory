@@ -7,20 +7,19 @@ const Template<%= capitalizedId %> = require('./templates/<%= id %>')
 <%_ }) _%>
 
 module.exports = class <%= project.nameCapitalized %> extends Factory {
-  id = '<%= project.name %>'
-  description = '<%= project.description %>'
-  commands = [
-    <%_ project.commands.forEach(({ id, capitalizedId }) => { _%>
-    new Command<%= capitalizedId %>(this),
-    <%_ }) _%>
-  ]
-  templates = [
-    <%_ project.templates.forEach(({ id, capitalizedId }) => { _%>
-    new Template<%= capitalizedId %>(this),
-    <%_ }) _%>
-  ]
-
-  factoryMethod1() {
-    this.log(`Factory: (${this.id})`, 'from factoryMethod1')
+  constructor() {
+    super(...arguments)
+    this.id = '<%= project.name %>'
+    this.description = '<%= project.description %>'
+    this.commands = [
+      <%_ project.commands.forEach(({ id, capitalizedId }) => { _%>
+      new Command<%= capitalizedId %>(this),
+      <%_ }) _%>
+    ]
+    this.templates = [
+      <%_ project.templates.forEach(({ id, capitalizedId }) => { _%>
+      new Template<%= capitalizedId %>(this),
+      <%_ }) _%>
+    ]
   }
 }

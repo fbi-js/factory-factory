@@ -47,6 +47,7 @@ export default class CommandBuild extends Command {
         files.map((f: string) => join(config.compilerOptions.rootDir, f)),
         tsOptions
       )
+      console.log()
       files.map((f) => this.debug(f))
       spinner.succeed('Compiled successfully')
     } catch (err) {
