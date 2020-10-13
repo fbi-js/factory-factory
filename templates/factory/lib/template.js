@@ -92,12 +92,7 @@ module.exports = class Template<%= capitalizedId %> extends Template {
     if (isValidObject(dependencies) || isValidObject(devDependencies)) {
       const installSpinner = this.createSpinner(`Installing dependencies...`).start()
       try {
-        const packageManager = flags.packageManager || this.context.get('config').packageManager
-        const cmds = packageManager === 'yarn' ? [packageManager] : [packageManager, 'install']
-        this.debug(`\nrunning \`${cmds.join(' ')}\` in ${this.targetDir}`)
-        await this.exec(cmds[0], cmds.slice(1), {
-          cwd: this.targetDir
-        })
+        await this.installDeps(this.targetDir, flags.packageManager, false)
         installSpinner.succeed(`Installed dependencies`)
       } catch (err) {
         installSpinner.fail('Failed to install dependencies. You can install them manually.')
