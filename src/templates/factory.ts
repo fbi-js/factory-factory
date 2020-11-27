@@ -121,7 +121,6 @@ export default class TemplateFactory extends Template {
       ],
       render: [
         'package.json',
-        '.fbi.config.js',
         'README.md',
         project.features.typescript ? 'src/index.ts' : 'lib/index.js',
         ...project.commands.map((data: any) => ({
