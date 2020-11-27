@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/fbi-js/factory-factory/compare/v1.0.0...v1.0.1) (2020-11-27)
+
+
+### Bug Fixes
+
+* add '@fbi-js/factory-factory' to 'devDependencies' ([5fe9212](https://github.com/fbi-js/factory-factory/commit/5fe9212ef159922055ccc6c24096e6629b214fec))
+
 ## [1.0.0](https://github.com/fbi-js/factory-factory/compare/v0.1.4...v1.0.0) (2020-11-27)
 
 

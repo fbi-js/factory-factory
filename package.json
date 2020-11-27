@@ -1,6 +1,6 @@
 {
   "name": "@fbi-js/factory-factory",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "factory for fbi factory development",
   "main": "lib/index.js",
   "files": [
