@@ -1,1 +1,1 @@
-export declare const getTsConfig: () => any;
+export declare const getTsConfig: (cwd?: string) => Record<string | number, any>;

@@ -1,9 +1,12 @@
 {
-  "name": "factory-factory",
+  "name": "@fbi-js/factory-factory",
   "version": "0.1.4",
   "description": "factory for fbi factory development",
-  "private": true,
   "main": "lib/index.js",
+  "files": [
+    "lib",
+    "templates"
+  ],
   "scripts": {
     "build": "rm -rf lib && tsc -p .",
     "watch": "npm run build && tsc --watch"
@@ -12,13 +15,12 @@
   "author": "shaw @neikvon",
   "license": "MIT",
   "dependencies": {
-    "fbi": "~4",
     "ejs": "^3.1.5",
-    "tslib": "^2.0.3",
-    "typescript": "^4.0.3"
+    "fbi": "~4",
+    "typescript": "^4.1.2"
   },
   "devDependencies": {
-    "@types/node": "*",
-    "@types/ejs": "^3.0.4"
+    "@types/ejs": "^3.0.4",
+    "@types/node": "*"
   }
 }

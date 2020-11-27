@@ -2,8 +2,11 @@
   "name": "<%= project.name %>",
   "version": "0.0.0",
   "description": "<%= project.description %>",
-  "private": true,
   "main": "lib/index.js",
+  "files": [
+    "lib",
+    "templates"
+  ],
   "scripts": {
   <%_ if (project.features.typescript) { _%>
     "build": "fbi b",
@@ -19,7 +22,6 @@
   }<%_ if (project.features.typescript) { _%>,
   "devDependencies": {
     "@types/node": "*",
-    "tslib": "^2.0.3",
     "@types/ejs": "^3.0.4"
   }<%_ } _%>
 }

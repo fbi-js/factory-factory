@@ -7,7 +7,7 @@ import Template<%= capitalizedId %> from './templates/<%= id %>'
 <%_ }) _%>
 
 export default class <%= project.nameCapitalized %> extends Factory {
-  id = '<%= project.name %>'
+  id = require('../package.json').name
   description = '<%= project.description %>'
   commands = [
     <%_ project.commands.forEach(({ id, capitalizedId }) => { _%>

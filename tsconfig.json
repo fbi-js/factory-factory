@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "importHelpers": true,
+    "rootDir": "src",
+    "outDir": "lib",
     "module": "commonjs",
-    "outDir": "./lib",
+    "target": "es2017",
     "strict": true,
     "pretty": true,
-    "target": "es2019",
+    "allowJs": true,
+    "declaration": true,
+    "skipLibCheck": true,
     "noImplicitThis": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["templates/**/*"]
+  "include": ["src"],
+  "exclude": ["templates", "lib"]
 }

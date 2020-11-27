@@ -9,7 +9,7 @@ const Template<%= capitalizedId %> = require('./templates/<%= id %>')
 module.exports = class <%= project.nameCapitalized %> extends Factory {
   constructor() {
     super(...arguments)
-    this.id = '<%= project.name %>'
+    this.id = require('../package.json').name
     this.description = '<%= project.description %>'
     this.commands = [
       <%_ project.commands.forEach(({ id, capitalizedId }) => { _%>

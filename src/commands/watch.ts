@@ -1,6 +1,7 @@
 import { Command } from 'fbi'
 import { join } from 'path'
 import * as ts from 'typescript'
+
 import Factory from '..'
 import { getTsConfig } from '../tsconfig'
 
