@@ -45,7 +45,7 @@ npx fbi create @fbi-js/factory-factory
 npm i @fbi-js/factory-factory
 ```
 
-Cteate and modify files
+Create and modify files
 
 ```ts
 // src/index.ts
