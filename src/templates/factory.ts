@@ -11,22 +11,25 @@ const { formatName, capitalizeEveryWord, isValidObject } = utils
 export default class TemplateFactory extends Template {
   id = 'factory'
   description = 'template for fbi factory'
-  path = 'templates/factory'
+  path = join(__dirname, '../../templates/factory')
   renderer = ejs.render
   templates = [new SubTemplateCommand(this.factory), new SubTemplateTemplate(this.factory)]
 
   constructor(public factory: Factory) {
-    super()
+    super(factory)
   }
 
   protected async gathering() {
-    const defaultName = (this.data.project && this.data.project.name) || 'factory-demo'
+    const defaultName = this.data?.project?.name ?? 'factory-demo'
+
+    this.data.factoryVersion = require('../../package.json').version
+
     this.data.project = await this.prompt([
       {
         type: 'input',
         name: 'name',
         message: 'Input the factory name',
-        initial({ enquirer }: any) {
+        initial() {
           return defaultName
         },
         validate(value: any) {
@@ -171,7 +174,12 @@ export default class TemplateFactory extends Template {
       this.error(this.errors)
     }
 
-    console.log(`\nNext steps:\n`)
+    console.log(`\nNext steps:`)
+
+    if (this.data.subDirectory) {
+      console.log(`
+  $ ${this.style.cyan('cd ' + this.data.subDirectory)}`)
+    }
 
     if (project.features.typescript) {
       console.log(`

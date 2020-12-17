@@ -9,11 +9,11 @@ const { capitalizeEveryWord } = utils
 export default class TemplateTemplate extends Template {
   id = 'template'
   description = 'template for factory template'
-  path = 'templates/factory'
+  path = join(__dirname, '../../../templates/factory')
   renderer = ejs.render
 
   constructor(public factory: Factory) {
-    super()
+    super(factory)
   }
 
   protected async gathering() {

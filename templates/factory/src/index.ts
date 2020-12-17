@@ -6,9 +6,11 @@ import Command<%= capitalizedId %> from './commands/<%= id %>'
 import Template<%= capitalizedId %> from './templates/<%= id %>'
 <%_ }) _%>
 
+const { name, description } = require('../package.json')
+
 export default class <%= project.nameCapitalized %> extends Factory {
-  id = require('../package.json').name
-  description = '<%= project.description %>'
+  id = name
+  description = description
   commands = [
     <%_ project.commands.forEach(({ id, capitalizedId }) => { _%>
     new Command<%= capitalizedId %>(this),
@@ -19,4 +21,13 @@ export default class <%= project.nameCapitalized %> extends Factory {
     new Template<%= capitalizedId %>(this),
     <%_ }) _%>
   ]
+}
+
+export {
+  <%_ project.commands.forEach(({ id, capitalizedId }) => { _%>
+  Command<%= capitalizedId %>,
+  <%_ }) _%>
+  <%_ project.templates.forEach(({ id, capitalizedId }) => { _%>
+  Template<%= capitalizedId %>,
+  <%_ }) _%>
 }

@@ -10,9 +10,16 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    <%_ if (project.features.typescript) { _%>
-    "tslib": "^2.0.1",
+    "<%= factory.id %>": "^<%= factoryVersion || '*' %>"<%_ if (project.features.typescript) { _%>,
     "@types/node": "*"
     <%_ } _%>
+  },
+  "fbi": {
+    "factory": {
+      "id": "<%= factory.id %>",
+      "version": "<%= factory.version %>",
+      "template": "<%= factory.template %>",
+      "features": <%- JSON.stringify(project.features) %>
+    }
   }
 }

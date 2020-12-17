@@ -17,11 +17,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "fbi": "~4",
+    "fbi": "^4.3.2",
     "ejs": "^3.1.5"
   },
   "devDependencies": {
-    "@fbi-js/factory-factory": "<%= factory.version || '*' %>"<%_ if (project.features.typescript) { _%>,
+    "<%= factory.id %>": "^<%= factoryVersion || '*' %>"<%_ if (project.features.typescript) { _%>,
     "@types/node": "*",
     "@types/ejs": "^3.0.4"
     <%_ } _%>

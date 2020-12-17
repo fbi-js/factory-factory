@@ -9,21 +9,25 @@ const { formatName, isValidObject } = utils
 export default class Template<%= capitalizedId %> extends Template {
   id = '<%= id %>'
   description = '<%_ if(description) { _%> <%= description %> <%_ } else { _%> template <%= id %> description <%_ } _%>'
-  path = 'templates/<%= id %>'
+  path = join(__dirname, '../../templates/<%= id %>')
   renderer = ejs.render
 
   constructor(public factory: Factory) {
-    super()
+    super(factory)
   }
 
   protected async gathering() {
+    const defaultName = this.data?.project?.name ?? 'project-demo'
+
+    this.data.factoryVersion = require('../../package.json').version
+
     this.data.project = await this.prompt([
       {
         type: 'input',
         name: 'name',
         message: 'Input the project name',
-        initial({ enquirer }: any) {
-          return 'project-demo'
+        initial() {
+          return defaultName
         },
         validate(value: any) {
           const name = formatName(value)
@@ -110,8 +114,14 @@ export default class Template<%= capitalizedId %> extends Template {
     }
 
     console.log(`
-Next steps:
-  $ ${this.style.cyan('cd ' + project.name)}
+Next steps:`)
+
+    if (this.data.subDirectory) {
+      console.log(`
+  $ ${this.style.cyan('cd ' + this.data.subDirectory)}`)
+    }
+
+    console.log(`
   $ ${this.style.cyan('fbi list')} ${this.style.dim('show available commands and sub templates')}`)
   }
 }
