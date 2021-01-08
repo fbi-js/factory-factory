@@ -28,7 +28,7 @@ export const getTsConfig = (cwd = process.cwd()): Record<string, any> => {
     ...userConfig,
     compilerOptions: {
       ...baseConfig.compilerOptions,
-      ...userConfig,
+      ...userConfig.compilerOptions,
       paths: {
         '*': typesPaths
       },
