@@ -15,11 +15,11 @@ export default class TemplateFactory extends Template {
   renderer = ejs.render
   templates = [new SubTemplateCommand(this.factory), new SubTemplateTemplate(this.factory)]
 
-  constructor(public factory: Factory) {
+  constructor (public factory: Factory) {
     super(factory)
   }
 
-  protected async gathering() {
+  protected async gathering (): Promise<void> {
     const defaultName = this.data?.project?.name ?? 'factory-demo'
 
     this.data.factoryVersion = require('../../package.json').version
@@ -29,10 +29,10 @@ export default class TemplateFactory extends Template {
         type: 'input',
         name: 'name',
         message: 'Input the factory name',
-        initial() {
+        initial () {
           return defaultName
         },
-        validate(value: any) {
+        validate (value: any) {
           const name = formatName(value)
           return (name && true) || 'please input a valid factory name'
         }
@@ -41,26 +41,26 @@ export default class TemplateFactory extends Template {
         type: 'input',
         name: 'description',
         message: 'Input factory description',
-        initial({ state }: any) {
+        initial ({ state }: any) {
           return `factory ${state.answers.name} description`
         }
       },
       {
         type: 'MultiSelect',
         name: 'features',
-        message: `Choose features for your project:`,
+        message: 'Choose features for your project:',
         hint: '(Use <space> to select, <return> to submit)',
         choices: [{ name: 'typescript', value: true }],
-        result(names: string[]) {
+        result (names: string[]) {
           return this.map(names)
         }
       },
       {
         type: 'list',
         name: 'commands',
-        message: `Input comma-separated names of the commands to generate:`,
+        message: 'Input comma-separated names of the commands to generate:',
         initial: ['build'],
-        result(names: any) {
+        result (names: any) {
           return [...new Set(formatName(names))].map((id: any) => ({
             id,
             capitalizedId: capitalizeEveryWord(id),
@@ -74,9 +74,9 @@ export default class TemplateFactory extends Template {
       {
         type: 'list',
         name: 'templates',
-        message: `Input comma-separated names of the templates to generate:`,
+        message: 'Input comma-separated names of the templates to generate:',
         initial: ['default'],
-        result(names: any) {
+        result (names: any) {
           return [...new Set(formatName(names))].map((id: any) => ({
             id,
             capitalizedId: capitalizeEveryWord(id),
@@ -89,22 +89,20 @@ export default class TemplateFactory extends Template {
     this.data.project.nameCapitalized = capitalizeEveryWord(this.data.project.name)
 
     const { factory, project } = this.data
-    this.spinner = this.createSpinner(`Creating project...`).start(
+    this.spinner = this.createSpinner('Creating project...').start(
       `Creating ${this.style.bold.green(project.name)} via ${factory.id} from ${
         factory.template
       }...`
     )
   }
 
-  protected async writing() {
+  protected async writing (): Promise<void> {
     const debug = !!this.context.get('debug')
     const { project } = this.data
     this.files = {
       copy: [
         '.editorconfig',
-        '.prettierrc',
         '.gitignore',
-        project.features.typescript ? 'tsconfig.json' : '',
         ...project.templates.map(({ id }: any) => ({
           from: 'templates/default',
           to: `templates/${id}`,
@@ -149,16 +147,16 @@ export default class TemplateFactory extends Template {
     }
   }
 
-  protected async installing(flags: Record<string, any>) {
+  protected async installing (flags: Record<string, any>): Promise<void> {
     const { project } = this.data
     this.spinner.succeed(`Created project ${this.style.cyan.bold(project.name)}`)
 
     const { dependencies, devDependencies } = require(join(this.targetDir, 'package.json'))
     if (isValidObject(dependencies) || isValidObject(devDependencies)) {
-      const installSpinner = this.createSpinner(`Installing dependencies...`).start()
+      const installSpinner = this.createSpinner('Installing dependencies...').start()
       try {
         await this.installDeps(this.targetDir, flags.packageManager, false)
-        installSpinner.succeed(`Installed dependencies`)
+        installSpinner.succeed('Installed dependencies')
       } catch (err) {
         installSpinner.fail('Failed to install dependencies. You can install them manually.')
         this.error(err)
@@ -166,7 +164,7 @@ export default class TemplateFactory extends Template {
     }
   }
 
-  protected async ending() {
+  protected async ending (): Promise<void> {
     const { project } = this.data
     const projectName = this.style.cyan.bold(project.name)
     if (this.errors) {
@@ -174,16 +172,16 @@ export default class TemplateFactory extends Template {
       this.error(this.errors)
     }
 
-    console.log(`\nNext steps:`)
+    console.log('\nNext steps:')
 
     if (this.data.subDirectory) {
       console.log(`
-  $ ${this.style.cyan('cd ' + this.data.subDirectory)}`)
+  $ ${this.style.cyan(`cd ${this.data.subDirectory}`)}`)
     }
 
     if (project.features.typescript) {
       console.log(`
-  ${this.style.dim(`1. run the first compile`)}
+  ${this.style.dim('1. run the first compile')}
   $ ${this.style.cyan('fbi build')}
 
   ${this.style.dim('2. link the factory to the store for testing')}
@@ -197,7 +195,7 @@ export default class TemplateFactory extends Template {
   $ ${this.style.cyan('fbi list')} ${this.style.dim(
         `the factory "${project.name}" should be listed"`
       )}
-  $ ${this.style.cyan(`fbi create`)} ${this.style.dim('select a template you just created')}
+  $ ${this.style.cyan('fbi create')} ${this.style.dim('select a template you just created')}
 
   ${this.style.dim('5. remove the factory from the store after tested')}
   $ ${this.style.cyan(`fbi remove ${project.name}`)}`)
@@ -211,7 +209,7 @@ export default class TemplateFactory extends Template {
   $ ${this.style.cyan('fbi list')} ${this.style.dim(
         `the factory "${project.name}" should be listed"`
       )}
-  $ ${this.style.cyan(`fbi create`)} ${this.style.dim('select a template you just created')}
+  $ ${this.style.cyan('fbi create')} ${this.style.dim('select a template you just created')}
 
   ${this.style.dim('3. remove the factory from the store after tested')}
   $ ${this.style.cyan(`fbi remove ${project.name}`)}`)

@@ -8,10 +8,11 @@
     "templates"
   ],
   "scripts": {
-  <%_ if (project.features.typescript) { _%>
+    <%_ if (project.features.typescript) { _%>
     "build": "fbi b",
-    "watch": "fbi w"
-  <%_ } _%>
+    "watch": "fbi w",
+    <%_ } _%>
+    "format": "prettier --write \"src/**/*.{ts,js,json}\""
   },
   "keywords": [],
   "author": "",
@@ -23,8 +24,9 @@
   "devDependencies": {
     "<%= factory.id %>": "^<%= factoryVersion || '*' %>"<%_ if (project.features.typescript) { _%>,
     "@types/node": "*",
-    "@types/ejs": "^3.0.4"
+    "@types/ejs": "^3.0.5",
     <%_ } _%>
+    "prettier": "^2.2.1"
   },
   "fbi": {
     "factory": {
@@ -33,5 +35,12 @@
       "template": "<%= factory.template %>",
       "features": <%- JSON.stringify(project.features) %>
     }
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "endOfLine": "auto"
   }
 }

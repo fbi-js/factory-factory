@@ -15,23 +15,23 @@ export default class CommandWatch extends Command {
     getNewLine: () => ts.sys.newLine
   }
 
-  constructor(public factory: Factory) {
+  constructor (public factory: Factory) {
     super()
   }
 
-  public disable() {
+  public async disable (): Promise<boolean | string> {
     return this.context.get('config.factory.features.typescript')
       ? false
       : 'Because there is no need to compile.'
   }
 
-  public async run(flags: any, unknow: any) {
+  public async run (flags: any, unknow: any): Promise<void> {
     this.debug(`Running command "${this.id}" from factory "${this.factory.id}" with options:`, {
       flags,
       unknow
     })
 
-    const spinner = this.createSpinner(`Start watching...`).start()
+    const spinner = this.createSpinner('Start watching...').start()
     try {
       const config = getTsConfig()
       const files = await this.glob('**/*.ts', {
@@ -58,9 +58,9 @@ export default class CommandWatch extends Command {
         // error
         (diagnostic: ts.Diagnostic) => {
           const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
-          if (diagnostic.file) {
+          if (diagnostic.file && typeof diagnostic.start === 'number') {
             const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(
-              diagnostic.start!
+              diagnostic.start
             )
             // don't exit
             console.log()
@@ -79,11 +79,10 @@ export default class CommandWatch extends Command {
         // change
         (diagnostic: ts.Diagnostic) => {
           const msg = ts.formatDiagnostic(diagnostic, this.formatHost)
-          if (/Found 0 errors/.test(msg)) {
+          if (msg.includes('Found 0 errors')) {
             // this.clearConsole()
             this.clear()
             spinner.succeed(msg)
-          } else if (/Starting compilation in watch mode/.test(msg)) {
           } else {
             spinner.fail(msg)
           }
@@ -105,7 +104,9 @@ export default class CommandWatch extends Command {
       }
       const origPostProgramCreate = host.afterProgramCreate
       host.afterProgramCreate = (program) => {
-        origPostProgramCreate!(program)
+        if (origPostProgramCreate) {
+          origPostProgramCreate(program)
+        }
       }
 
       // `createWatchProgram` creates an initial program, watches files, and updates

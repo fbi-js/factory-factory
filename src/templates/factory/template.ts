@@ -12,11 +12,11 @@ export default class TemplateTemplate extends Template {
   path = join(__dirname, '../../../templates/factory')
   renderer = ejs.render
 
-  constructor(public factory: Factory) {
+  constructor (public factory: Factory) {
     super(factory)
   }
 
-  protected async gathering() {
+  protected async gathering (): Promise<void> {
     const { template } = (await this.prompt({
       type: 'Form',
       name: 'template',
@@ -25,7 +25,7 @@ export default class TemplateTemplate extends Template {
         { name: 'id', message: 'ID' },
         { name: 'description', message: 'Description' }
       ],
-      validate({ id }: any) {
+      validate ({ id }: any) {
         return !!id.trim() || 'ID is required. e.g.: vue, react'
       }
     } as any)) as any
@@ -36,7 +36,7 @@ export default class TemplateTemplate extends Template {
     this.features = factory?.features || {}
   }
 
-  protected async checking() {
+  protected async checking (): Promise<void> {
     const { factory, template } = this.data
     this.targetDir = process.cwd()
     const dirExist = await this.fs.pathExists(join(this.targetDir, 'templates', template.id))
@@ -44,7 +44,7 @@ export default class TemplateTemplate extends Template {
       join(
         this.targetDir,
         this.features.typescript ? 'src' : 'lib',
-        template.id + this.features.typescript ? 'ts' : 'js'
+        `${template.id}.${this.features.typescript ? 'ts' : 'js'}`
       )
     )
     if (dirExist) {
@@ -54,14 +54,14 @@ export default class TemplateTemplate extends Template {
       this.error(`template file "${template.id}" already exist`).exit()
     }
 
-    this.spinner = this.createSpinner(`Creating template...`).start(
+    this.spinner = this.createSpinner('Creating template...').start(
       `Creating template ${this.style.bold.green(template.id)} via ${this.id} from ${
         factory.template
       }...`
     )
   }
 
-  protected async writing() {
+  protected async writing (): Promise<void> {
     const debug = !!this.context.get('debug')
     const { template } = this.data
     const from = this.features.typescript ? 'src/template.ts' : 'lib/template.js'
@@ -92,7 +92,7 @@ export default class TemplateTemplate extends Template {
     this.spinner.succeed(`Created template ${this.style.cyan.bold(this.data.template.id)}`)
   }
 
-  protected async ending() {
+  protected async ending (): Promise<void> {
     const { template } = this.data
     const templateFullId = `Template${template.capitalizedId}`
     if (this.errors) {

@@ -12,11 +12,11 @@ export default class TemplateCommand extends Template {
   path = join(__dirname, '../../../templates/factory')
   renderer = ejs.render
 
-  constructor(public factory: Factory) {
+  constructor (public factory: Factory) {
     super(factory)
   }
 
-  protected async gathering() {
+  protected async gathering (): Promise<void> {
     const { command } = (await this.prompt({
       type: 'Form',
       name: 'command',
@@ -26,7 +26,7 @@ export default class TemplateCommand extends Template {
         { name: 'alias', message: 'Alias' },
         { name: 'description', message: 'Description' }
       ],
-      validate({ id }: any) {
+      validate ({ id }: any) {
         return !!id.trim() || 'ID is required. e.g.: serve, build'
       }
     } as any)) as any
@@ -36,14 +36,14 @@ export default class TemplateCommand extends Template {
     const factory = this.context.get('config.factory')
     this.features = factory?.features || {}
 
-    this.spinner = this.createSpinner(`Creating command...`).start(
+    this.spinner = this.createSpinner('Creating command...').start(
       `Creating command ${this.style.bold.green(command.id)} via ${this.id} from ${
         factory.template
       }...`
     )
   }
 
-  protected async writing() {
+  protected async writing (): Promise<void> {
     const debug = !!this.context.get('debug')
     this.targetDir = process.cwd()
     const { command } = this.data
@@ -84,7 +84,7 @@ export default class TemplateCommand extends Template {
     this.spinner.succeed(`Created command ${this.style.cyan.bold(this.data.command.id)}`)
   }
 
-  protected async ending() {
+  protected async ending (): Promise<void> {
     const { command } = this.data
     const commandFullId = `Command${command.capitalizedId}`
     if (this.errors) {

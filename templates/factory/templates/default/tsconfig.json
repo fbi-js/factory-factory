@@ -1,18 +1,6 @@
 {
+  "extends": "@fbi-js/tsconfig/base",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "lib",
-    "module": "commonjs",
-    "target": "es2017",
-    "strict": true,
-    "pretty": true,
-    "allowJs": true,
-    "declaration": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "noImplicitThis": false,
-    "resolveJsonModule": true
-  },
-  "include": ["src"],
-  "exclude": ["lib"]
+    "outDir": "./lib"
+  }
 }

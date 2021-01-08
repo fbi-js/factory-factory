@@ -7,8 +7,8 @@ import TemplateFactory from './templates/factory'
 const { name, description } = require('../package.json')
 
 export default class FactoryFactory extends Factory {
-  id = name
-  description = description
+  id: string = name
+  description: string = description
   commands = [new CommandBuild(this), new CommandWatch(this)]
   templates = [new TemplateFactory(this)]
 }

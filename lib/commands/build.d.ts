@@ -5,8 +5,9 @@ export default class CommandBuild extends Command {
     id: string;
     alias: string;
     description: string;
+    flags: (string | boolean)[][];
     constructor(factory: Factory);
-    disable(): Promise<false | "Because there is no need to compile.">;
+    disable(): Promise<boolean | string>;
     run(flags: any, unknow: any): Promise<void>;
     private compile;
 }

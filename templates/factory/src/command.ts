@@ -8,11 +8,11 @@ export default class Command<%= capitalizedId %> extends Command {
   flags = []
   description = '<%_ if(description) { _%> <%= description %> <%_ } else { _%> command <%= id %> description <%_ } _%>'
 
-  constructor(public factory: Factory) {
+  constructor (public factory: Factory) {
     super()
   }
 
-  public async run(flags: any, unknow: any) {
+  public async run (flags: any, unknow: any) {
     this.debug(`Running command "${this.id}" from factory "${this.factory.id}" with options:`, {
       flags,
       unknow

@@ -11,6 +11,7 @@
   "dependencies": {},
   "devDependencies": {
     "<%= factory.id %>": "^<%= factoryVersion || '*' %>"<%_ if (project.features.typescript) { _%>,
+    "@fbi-js/tsconfig": "^1.1.0",
     "@types/node": "*"
     <%_ } _%>
   },
@@ -21,5 +22,12 @@
       "template": "<%= factory.template %>",
       "features": <%- JSON.stringify(project.features) %>
     }
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "endOfLine": "auto"
   }
 }
