@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/fbi-js/factory-factory/compare/v1.2.0...v1.2.1) (2021-01-08)
+
+
+### Bug Fixes
+
+* **tsconfig:** user config parse error ([a47914d](https://github.com/fbi-js/factory-factory/commit/a47914dd3a91d712587bcff6d154e0adbf6bdee1))
+
 ## [1.2.0](https://github.com/fbi-js/factory-factory/compare/v1.1.0...v1.2.0) (2021-01-08)
 
 
