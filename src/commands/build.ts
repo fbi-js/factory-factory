@@ -54,7 +54,12 @@ export default class CommandBuild extends Command {
       )
 
       if (errors.length) {
-        this.error(errors.join('\n'))
+        this.error(`\ntsconfig error:`)
+        for (const err of errors) {
+          if (err && err.messageText) {
+            this.error(err.messageText)
+          }
+        }
       }
 
       this.compile(
